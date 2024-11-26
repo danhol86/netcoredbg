@@ -9,6 +9,7 @@ using System.Runtime.InteropServices;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using System.Text;
+using static NetCoreDbg.Evaluation.OneOperandCommand;
 
 namespace NetCoreDbg
 {
@@ -288,7 +289,7 @@ namespace NetCoreDbg
 
                 FormatF argsStruct;
                 argsStruct.Flags = Flags;
-                argsStructPtr = Marshal.AllocCoTaskMem(Marshal.SizeOf<FormatF>());
+                argsStructPtr = Marshal.AllocCoTaskMem(Marshal.SizeOf(typeof(FormatF)));
                 Marshal.StructureToPtr(argsStruct, argsStructPtr, false);
                 return argsStructPtr;
             }
@@ -349,13 +350,13 @@ namespace NetCoreDbg
                 if (Argument.GetType() == typeof(string) || Argument.GetType() == typeof(char))
                 {
                     argsStruct = new FormatFS();
-                    argsStructPtr = Marshal.AllocCoTaskMem(Marshal.SizeOf<FormatFS>());
+                    argsStructPtr = Marshal.AllocCoTaskMem(Marshal.SizeOf(typeof(FormatFS)));
                     argsStruct.String = Marshal.StringToBSTR(Argument.ToString());
                 }
                 else if (Argument.GetType() == typeof(int) || Argument.GetType() == typeof(ePredefinedType))
                 {
                     argsStruct = new FormatFI();
-                    argsStructPtr = Marshal.AllocCoTaskMem(Marshal.SizeOf<FormatFI>());
+                    argsStructPtr = Marshal.AllocCoTaskMem(Marshal.SizeOf(typeof(FormatFI)));
                     argsStruct.Int = (int)Argument; // Note, enum must be explicitly converted to int.
                 }
                 else
@@ -430,14 +431,14 @@ namespace NetCoreDbg
                 if (Arguments[0].GetType() == typeof(string) && Arguments[1].GetType() == typeof(int))
                 {
                     argsStruct = new FormatFIS();
-                    argsStructPtr = Marshal.AllocCoTaskMem(Marshal.SizeOf<FormatFIS>());
+                    argsStructPtr = Marshal.AllocCoTaskMem(Marshal.SizeOf(typeof(FormatFIS)));
                     argsStruct.String = Marshal.StringToBSTR(Arguments[0].ToString());
                     argsStruct.Int = (int)Arguments[1];
                 }
                 else if (Arguments[0].GetType() == typeof(ePredefinedType))
                 {
                     argsStruct = new FormatFIP();
-                    argsStructPtr = Marshal.AllocCoTaskMem(Marshal.SizeOf<FormatFIP>());
+                    argsStructPtr = Marshal.AllocCoTaskMem(Marshal.SizeOf(typeof(FormatFIP)));
                     argsStruct.Int = (int)Arguments[0]; // Note, enum must be explicitly converted to int.
                     int size = 0;
                     IntPtr data = IntPtr.Zero;

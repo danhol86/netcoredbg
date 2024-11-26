@@ -433,7 +433,7 @@ namespace NetCoreDbg
                 if (list.Count == 0)
                     return RetCode.Fail;
 
-                var structSize = Marshal.SizeOf<DbgSequencePoint>();
+                var structSize = Marshal.SizeOf(typeof(DbgSequencePoint)); 
                 IntPtr allPoints = Marshal.AllocCoTaskMem(list.Count * structSize);
                 var currentPtr = allPoints;
 
@@ -642,7 +642,7 @@ namespace NetCoreDbg
                 if (ModuleData.Count == 0)
                     return RetCode.OK;
 
-                int structModuleMethodsDataSize = Marshal.SizeOf<file_methods_data_t>();
+                int structModuleMethodsDataSize = Marshal.SizeOf(typeof(file_methods_data_t));
                 module_methods_data_t managedData;
                 managedData.fileNum = ModuleData.Count;
                 managedData.moduleMethodsData = Marshal.AllocCoTaskMem(ModuleData.Count * structModuleMethodsDataSize);
@@ -651,7 +651,7 @@ namespace NetCoreDbg
 
                 foreach (KeyValuePair<DocumentHandle, List<method_data_t>> fileData in ModuleData)
                 {
-                    int structMethodDataSize = Marshal.SizeOf<method_data_t>();
+                    int structMethodDataSize = Marshal.SizeOf(typeof(method_data_t));
                     file_methods_data_t fileMethodData;
                     fileMethodData.document = Marshal.StringToBSTR(reader.GetString(reader.GetDocument(fileData.Key).Name));
                     unmanagedBSTRList.Add(fileMethodData.document);
@@ -670,7 +670,7 @@ namespace NetCoreDbg
                     currentModuleMethodsDataPtr = currentModuleMethodsDataPtr + structModuleMethodsDataSize;
                 }
             
-                data = Marshal.AllocCoTaskMem(Marshal.SizeOf<module_methods_data_t>());
+                data = Marshal.AllocCoTaskMem(Marshal.SizeOf(typeof(module_methods_data_t)));
                 unmanagedPTRList.Add(data);
                 Marshal.StructureToPtr(managedData, data, false);
             }
@@ -835,7 +835,7 @@ namespace NetCoreDbg
                 if (list.Count == 0)
                     return RetCode.OK;
 
-                int structSize = Marshal.SizeOf<resolved_bp_t>();
+                int structSize = Marshal.SizeOf(typeof(resolved_bp_t));
                 data = Marshal.AllocCoTaskMem(list.Count * structSize);
                 IntPtr dataPtr = data;
 
@@ -1447,7 +1447,7 @@ namespace NetCoreDbg
                 if (list.Count == 0)
                     return RetCode.Fail;
 
-                int structSize = Marshal.SizeOf<AsyncAwaitInfoBlock>();
+                int structSize = Marshal.SizeOf(typeof(AsyncAwaitInfoBlock));
                 asyncInfo = Marshal.AllocCoTaskMem(list.Count * structSize);
                 IntPtr currentPtr = asyncInfo;
 
